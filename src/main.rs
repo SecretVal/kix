@@ -1,4 +1,3 @@
-mod tui;
 use std::{fs, process::Command};
 
 use clap::{Parser, Subcommand};
@@ -15,7 +14,7 @@ struct Cli {
 enum Commands {
     Create {
         dir: String,
-        idk: String,
+        name: String,
     },
     Version 
 }
@@ -23,24 +22,16 @@ enum Commands {
 fn main() {
     let cli = Cli::parse();
     match &cli.command {
-        Commands::Create { dir, idk}=> {
-            if !dir.is_empty() {
-                if !idk.is_empty(){
-                    let _ = fs::create_dir(dir);
-                    let _ = std::env::set_current_dir(dir)
-                        .expect("Couldn't go into directory");
-                    let _ = Command::new("nix")
-                        .arg("flake")
-                        .arg("init")
-                        .arg("-t")
-                        .arg(format!("github:ALT-F4-LLC/kickstart.nix#{}", idk))
-                        .output();
-                }else {
-                    println!("Please use kix create [name] [idk]")
-                }
-            } else {
-                let _ = tui::run();
-            }
+        Commands::Create { dir, name } => {
+            let _ = fs::create_dir(dir);
+            let _ = std::env::set_current_dir(dir)
+                .expect("Couldn't go into directory");
+            let _ = Command::new("nix")
+                .arg("flake")
+                .arg("init")
+                .arg("-t")
+                .arg(format!("github:ALT-F4-LLC/kickstart.nix#{}",name))
+                .output();
         }
         Commands::Version => {
             println!(env!("CARGO_PKG_VERSION"));
