@@ -1,3 +1,5 @@
+mod tui;
+
 use std::{fs, process::Command};
 
 use clap::{Parser, Subcommand};
@@ -12,30 +14,48 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Commands {
-    Create {
-        dir: String,
-        name: String,
-    },
-    Version 
+    Create(CreatArgs)
+}
+
+#[derive(Parser, Debug)]
+#[command(author, version, about, long_about = None)]
+struct CreatArgs{
+    #[arg(short, long,required=false, requires="name")]
+    dir: Option<String>,
+
+    #[arg(short, long,required=false,requires="dir")]
+    language: Option<String>,
 }
 
 fn main() {
     let cli = Cli::parse();
     match &cli.command {
-        Commands::Create { dir, name } => {
-            let _ = fs::create_dir(dir);
-            let _ = std::env::set_current_dir(dir)
-                .expect("Couldn't go into directory");
-            let _ = Command::new("nix")
-                .arg("flake")
-                .arg("init")
-                .arg("-t")
-                .arg(format!("github:ALT-F4-LLC/kickstart.nix#{}",name))
-                .output();
-        }
-        Commands::Version => {
-            println!(env!("CARGO_PKG_VERSION"));
-        }
+        Commands::Create(args) => {
+            match &args.dir {
+                Some(dir) => {
+                    match &args.language {
+                        Some(language) => {
+                            fs::create_dir(&dir)
+                                .expect("couldnt create directory");
+                            let _ = std::env::set_current_dir(dir)
+                                .expect("Couldn't go into directory");
+                            let _ = Command::new("nix")
+                                .arg("flake")
+                                .arg("init")
+                                .arg("-t")
+                                .arg(format!("github:ALT-F4-LLC/kickstart.nix#{}",language))
+                                .output();
+                        },
+                        None => {},
+                    }
+                },
+                None => {
+                    let _ = tui::run().map_err(|err|{
+                        eprintln!("there was this error: {:?}", err);
+                    });
+                },
+            }
+        },
     }
 }
 
