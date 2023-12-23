@@ -39,7 +39,7 @@ fn create_text_inputut(mut terminal: Terminal<CrosstermBackend<Stdout>>, prompt:
         let _completed_frame = terminal.draw(|frame| {
             let area = frame.size();
             frame.render_widget(
-                Paragraph::new(prompt.clone() + &out + " "),
+                Paragraph::new(prompt.clone() + &out),
                 area,
                 );
         })?;
@@ -55,18 +55,13 @@ fn create_text_inputut(mut terminal: Terminal<CrosstermBackend<Stdout>>, prompt:
                     match key.code{
                         KeyCode::Enter=> break,
                         KeyCode::Char(' ') => {
-                            let _ = terminal.show_cursor();
-                            out = out + &String::from(' ');
-                            let _completed_frame = terminal.draw(|frame| {
-                                let area = frame.size();
-                                frame.render_widget(
-                                    Paragraph::new(prompt.clone() + &out + " "),
-                                    area,
-                                    );
-                            })?;
+                            continue;
                         },
                         KeyCode::Char(a) => {
                             out = out + &String::from(a);
+                        },
+                        KeyCode::Backspace => {
+                            out.pop();
                         },
                         _ => {}, 
                     }
