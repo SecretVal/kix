@@ -27,7 +27,7 @@
       packages = {
         default = buildRustPackage {
           inherit version;
-          cargoSha256 = "sha256-615KhKoEDs1uNeRBowZ9ew9mshQfQusb4XN3PJ1iYIk=";
+          cargoSha256 = "sha256-1OFgP2N+8i3T5NzhOj8MZkw0zfiXtLQPupM3SVS4Bqo=";
           pname = name;
           src = ./.;
         };
