@@ -20,7 +20,7 @@ enum Commands {
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct CreatArgs{
-    #[arg(short, long,required=false)]
+    #[arg(short, long,required=false,requires="language")]
     dir: Option<String>,
 
     #[arg(short, long,required=false,requires="dir")]
