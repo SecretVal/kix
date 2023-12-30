@@ -14,12 +14,12 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Commands {
-    Create(CreatArgs)
+    Create(CreateArgs)
 }
 
 #[derive(Parser, Debug)]
-#[command(author, version, about, long_about = None)]
-struct CreatArgs{
+#[command(author, version, about, long_about = "Create a project using kickstart.nix")]
+struct CreateArgs{
     #[arg(short, long,required=false,requires="language")]
     dir: Option<String>,
 
