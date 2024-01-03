@@ -1,6 +1,7 @@
-use std::{io::{stdout, Result, Stdout, self, stdin,Write,Read, BufRead}, fs, process::Command};
+use std::{fs, process::Command};
+use std::io::{stdout, Result,  self, stdin,Write,BufRead};
 
-pub fn run() -> Result<()> {
+pub fn create() -> Result<()> {
     let dir = create_text_inputut("Directory: ".to_string()).unwrap();
     let language = create_text_inputut("Language: ".to_string()).unwrap();
     fs::create_dir(dir.clone())
@@ -12,9 +13,20 @@ pub fn run() -> Result<()> {
         .arg("init")
         .arg("-t")
         .arg(format!("github:ALT-F4-LLC/kickstart.nix#{}",language))
-         .output();
+        .output();
     Ok(())
 }
+pub fn init() -> Result<()> {
+    let language = create_text_inputut("Language: ".to_string()).unwrap();
+    let _ = Command::new("nix")
+        .arg("flake")
+        .arg("init")
+        .arg("-t")
+        .arg(format!("github:ALT-F4-LLC/kickstart.nix#{}",language))
+        .output();
+    Ok(())
+}
+
 
 fn create_text_inputut(prompt: String) -> Result<String>{
     let mut handler = stdin().lock();

@@ -3,7 +3,8 @@ mod tui;
 use std::fs;
 use std::process::Command;
 
-use clap::{Parser, Subcommand};
+use clap::Subcommand;
+use clap::Parser;
 
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
