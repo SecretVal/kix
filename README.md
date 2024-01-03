@@ -18,12 +18,12 @@ Dependencies:
 3. In the repo you just cloned run:
 ```sh
 nix profile install
-```.
+```
 4. Now you have kix installed.
-5. Look here [How to use](## How to use)
+5. Look here [How to use](##-How-to-use)
 
 ## How to use 
-```sh
+``sh
 kix create
 kix init
 ```
