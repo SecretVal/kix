@@ -23,7 +23,7 @@ nix profile install
 5. Look here [How to use](#How-to-use)
 
 ## How to use 
-``sh
+```sh
 kix create
 kix init
 ```
