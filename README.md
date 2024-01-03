@@ -20,7 +20,7 @@ Dependencies:
 nix profile install
 ```
 4. Now you have kix installed.
-5. Look here [How to use](##-How-to-use)
+5. Look here [How to use](#2-How-to-use)
 
 ## How to use 
 ``sh
