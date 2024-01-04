@@ -1,5 +1,4 @@
-use std::{fs, process::Command};
-use std::io::{stdout, Result,  self, stdin,Write,BufRead};
+use std::{io::{stdout, Result,  self, stdin,Write,BufRead}, fs, process::Command};
 
 pub fn create() -> Result<()> {
     let dir = create_text_inputut("Directory: ".to_string()).unwrap();
@@ -14,8 +13,9 @@ pub fn create() -> Result<()> {
         .arg("-t")
         .arg(format!("github:ALT-F4-LLC/kickstart.nix#{}",language))
         .output();
-    Ok(())
+    return Ok(())
 }
+
 pub fn init() -> Result<()> {
     let language = create_text_inputut("Language: ".to_string()).unwrap();
     let _ = Command::new("nix")
