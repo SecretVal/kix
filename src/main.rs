@@ -6,7 +6,12 @@ use std::process::Command;
 use clap::{Parser, Subcommand};
 
 #[derive(Parser)]
-#[command(author, version, about, long_about = None)]
+#[command(author, version, about, long_about = r#"
+          This is a cli tool to create/init new new projects.
+
+          Special thanks to:
+          ALT-F4-LLC (creator of )https://github.com/ALT-F4-LLC/kickstart.nix ☺
+"#)]
 #[command(propagate_version = true)]
 struct Cli {
     #[command(subcommand)]
@@ -34,7 +39,6 @@ struct InitArgs{
     #[arg(short, long,required=false,requires="dir")]
     language: Option<String>,
 }
-
 
 fn main() {
     let cli = Cli::parse();
