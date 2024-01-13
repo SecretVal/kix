@@ -1,6 +1,6 @@
 mod tui;
 
-use std::fs;
+use std::{fs, io::Write};
 use std::process::Command;
 
 use clap::{Parser, Subcommand};
