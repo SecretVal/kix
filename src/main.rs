@@ -1,6 +1,6 @@
 mod tui;
 
-use std::{fs, io::Write};
+use std::{fs, env};
 use std::process::Command;
 
 use clap::{Parser, Subcommand};
@@ -58,6 +58,11 @@ fn main() {
                                 .arg("-t")
                                 .arg(format!("github:ALT-F4-LLC/kickstart.nix#{}",language))
                                 .output();
+
+
+                            let mut flake = fs::read_to_string("./flake.nix").unwrap();
+                            flake = flake.replace("example", &dir);
+                            let _ = fs::write("./flake.nix", flake).unwrap();
                         },
                         None => {},
                     }
@@ -78,6 +83,13 @@ fn main() {
                         .arg("-t")
                         .arg(format!("github:ALT-F4-LLC/kickstart.nix#{}",language))
                         .output();
+                    let current_dir = env::current_dir().unwrap();
+                    let binding = current_dir.display().to_string();
+                    let dir = binding.split("/").last().unwrap();
+
+                    let mut flake = fs::read_to_string("./flake.nix").unwrap();
+                    flake = flake.replace("example", &dir);
+                    let _ = fs::write("./flake.nix", flake).unwrap();
                 },
                 None => {
                     let _ = tui::init().map_err(|err| {
