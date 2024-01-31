@@ -18,7 +18,6 @@ nix profile install
 ```
 
 4. Now you have kix installed.
-
 5 Look here [How to use](#Quickstart)
 
 ## Quickstart
