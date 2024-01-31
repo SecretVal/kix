@@ -10,7 +10,7 @@ Dependencies:
     - nix flakes
     - git
 
-1. Install/activate all the dependencies.
+1. Install all the dependencies.
 2. Clone this git repo.
 3. In the repo you just cloned run:
 ```sh
@@ -18,6 +18,7 @@ nix profile install
 ```
 
 4. Now you have kix installed.
+
 5 Look here [How to use](#Quickstart)
 
 ## Quickstart
