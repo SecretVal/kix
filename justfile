@@ -3,8 +3,8 @@ build:
 
 cbuild: 
     cargo build
-run:
-    nix run
+run command:
+    nix run -- {{ command }}
 
-crun: 
-    cargo run
+crun command: 
+    cargo run -- {{ command }}
