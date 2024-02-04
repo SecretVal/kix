@@ -18,10 +18,9 @@ nix profile install
 ```
 
 4. Now you have kix installed.
-5 Look here [How to use](#Quickstart)
+5. Look here [How to use](#Quickstart)
 
 ## Quickstart
 ```sh
-kix create
+kix help
 ```
-Run kix -h for more information.
