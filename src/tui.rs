@@ -1,12 +1,22 @@
 use std::{
     env, fs,
     io::{self, stdin, stdout, BufRead, Result, Write},
-    process::Command,
+    process::{self, Command},
 };
 
 pub fn create() -> Result<()> {
     let dir = create_text_inputut("Directory: ".to_string()).unwrap();
+    if dir.is_empty() {
+        eprintln!("Please specify the directory.");
+        process::exit(1);
+    }
+
     let language = create_text_inputut("Language: ".to_string()).unwrap();
+    if language.is_empty() {
+        eprintln!("Please specify the language.");
+        process::exit(1);
+    }
+
     fs::create_dir(dir.clone()).expect("couldnt create directory");
     let _ = std::env::set_current_dir(&dir).expect("Couldn't go into directory");
     let _ = Command::new("nix")
@@ -24,6 +34,11 @@ pub fn create() -> Result<()> {
 
 pub fn init() -> Result<()> {
     let language = create_text_inputut("Language: ".to_string()).unwrap();
+    if language.is_empty() {
+        eprintln!("Please specify the language.");
+        process::exit(1);
+    }
+
     let _ = Command::new("nix")
         .arg("flake")
         .arg("init")

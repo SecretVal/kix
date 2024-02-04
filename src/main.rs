@@ -51,7 +51,7 @@ struct CreateArgs {
     long_about = "Initialize a project using kickstart.nix"
 )]
 struct InitArgs {
-    #[arg(short, long, required = false, requires = "dir")]
+    #[arg(short, long, required = false)]
     language: Option<String>,
 }
 
