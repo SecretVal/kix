@@ -1,10 +1,10 @@
 # kix
 
 ## What is kix
-Kix is a cli interface for [kickstart.nix](https://github.com/ALT-F4-LLC/kickstart.nix) written in rust (yeah rust) 
+Kix is a cli interface for [kickstart.nix](https://github.com/ALT-F4-LLC/kickstart.nix) written in rust (yeah rust)
 
 ## Install
-Dependencies: 
+Dependencies:
     - nix
     - nix-command
     - nix flakes
@@ -31,7 +31,7 @@ kix help
 nix profile list
 ```
 3. Copy the store path of the one with kix in the name.
-4. Now run: 
+4. Now run:
 ```sh
 nix profile remove + {store path}
 ```
