@@ -40,6 +40,7 @@ fn read_dir(path: &str) -> Vec<PathBuf> {
             }
         } else {
             eprintln!("Couldn't read a file");
+            eprintln!("{:?}", file);
             process::exit(1);
         }
     }
@@ -51,8 +52,27 @@ fn process_files(files: Vec<PathBuf>, r: &str) {
         let content = fs::read_to_string(file.clone());
         if !content.is_ok() {
             eprintln!("Couldn't read a file");
+            eprintln!("{:?}", file);
             process::exit(1);
         }
         let _ = fs::write(file.clone(), content.unwrap().replace("example", r));
+        check_and_rename(file.clone(), r);
+    }
+}
+fn check_and_rename(file: PathBuf, r: &str) {
+    if file
+        .as_path()
+        .display()
+        .to_string()
+        .split("/")
+        .last()
+        .unwrap()
+        .to_string()
+        .contains("example")
+    {
+        let _ = fs::rename(
+            file.as_path(),
+            file.as_path().display().to_string().replace("example", r),
+        );
     }
 }

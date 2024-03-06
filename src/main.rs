@@ -40,7 +40,7 @@ struct CreateArgs {
     #[arg(short, long, required = false, requires = "language")]
     name: Option<String>,
 
-    #[arg(short, long, required = false, requires = "dir")]
+    #[arg(short, long, required = false, requires = "name")]
     language: Option<String>,
 }
 #[derive(Parser, Debug)]
