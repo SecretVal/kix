@@ -15,7 +15,7 @@ use clap::{Parser, Subcommand};
 This is a cli tool to create/init new new projects.
 
 Special thanks to:
-ALT-F4-LLC creator of https://github.com/ALT-F4-LLC/kickstart.nex"#
+ALT-F4-LLC creator of https://github.com/ALT-F4-LLC/kickstart.nix"#
 )]
 #[command(propagate_version = true)]
 struct Cli {
