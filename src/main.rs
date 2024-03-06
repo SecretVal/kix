@@ -1,3 +1,4 @@
+mod replace;
 mod tui;
 
 use std::process::Command;
@@ -37,7 +38,7 @@ enum Commands {
 )]
 struct CreateArgs {
     #[arg(short, long, required = false, requires = "language")]
-    dir: Option<String>,
+    name: Option<String>,
 
     #[arg(short, long, required = false, requires = "dir")]
     language: Option<String>,
@@ -57,7 +58,7 @@ struct InitArgs {
 fn main() {
     let cli = Cli::parse();
     match &cli.command {
-        Commands::Create(args) => match &args.dir {
+        Commands::Create(args) => match &args.name {
             Some(dir) => match &args.language {
                 Some(language) => {
                     fs::create_dir(&dir).expect("couldnt create directory");
@@ -72,6 +73,9 @@ fn main() {
                     let mut flake = fs::read_to_string("./flake.nix").unwrap();
                     flake = flake.replace("example", &dir);
                     let _ = fs::write("./flake.nix", flake).unwrap();
+
+                    print!("{dir}");
+                    replace::run(format!("./{}", dir).as_str(), &dir);
                 }
                 None => {}
             },
@@ -96,6 +100,8 @@ fn main() {
                 let mut flake = fs::read_to_string("./flake.nix").unwrap();
                 flake = flake.replace("example", &dir);
                 let _ = fs::write("./flake.nix", flake).unwrap();
+
+                replace::run("./", &dir);
             }
             None => {
                 let _ = tui::init().map_err(|err| {

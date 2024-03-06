@@ -1,3 +1,4 @@
+use crate::replace;
 use std::{
     env, fs,
     io::{self, stdin, stdout, BufRead, Result, Write},
@@ -28,8 +29,9 @@ pub fn create() -> Result<()> {
     let mut flake = fs::read_to_string("./flake.nix").unwrap();
     flake = flake.replace("example", &dir);
     let _ = fs::write("./flake.nix", flake).unwrap();
+    replace::run("./", &dir);
 
-    return Ok(());
+    Ok(())
 }
 
 pub fn init() -> Result<()> {
@@ -52,6 +54,7 @@ pub fn init() -> Result<()> {
     let mut flake = fs::read_to_string("./flake.nix").unwrap();
     flake = flake.replace("example", &dir);
     let _ = fs::write("./flake.nix", flake).unwrap();
+    replace::run("./", &dir);
 
     Ok(())
 }

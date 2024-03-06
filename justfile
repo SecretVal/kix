@@ -1,10 +1,10 @@
 build:
     nix build
 
-cbuild: 
+cbuild:
     cargo build
 run command:
     nix run -- {{ command }}
 
-crun command: 
+crun command:
     cargo run -- {{ command }}
