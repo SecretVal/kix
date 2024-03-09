@@ -70,12 +70,7 @@ fn main() {
                         .arg(format!("github:ALT-F4-LLC/kickstart.nix#{}", language))
                         .output();
 
-                    let mut flake = fs::read_to_string("./flake.nix").unwrap();
-                    flake = flake.replace("example", &dir);
-                    let _ = fs::write("./flake.nix", flake).unwrap();
-
-                    print!("{dir}");
-                    replace::run(format!("./{}", dir).as_str(), &dir);
+                    replace::run("./", &dir);
                 }
                 None => {}
             },
@@ -96,10 +91,6 @@ fn main() {
                 let current_dir = env::current_dir().unwrap();
                 let binding = current_dir.display().to_string();
                 let dir = binding.split("/").last().unwrap();
-
-                let mut flake = fs::read_to_string("./flake.nix").unwrap();
-                flake = flake.replace("example", &dir);
-                let _ = fs::write("./flake.nix", flake).unwrap();
 
                 replace::run("./", &dir);
             }

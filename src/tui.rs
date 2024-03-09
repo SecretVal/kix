@@ -26,9 +26,6 @@ pub fn create() -> Result<()> {
         .arg("-t")
         .arg(format!("github:ALT-F4-LLC/kickstart.nix#{}", language))
         .output();
-    let mut flake = fs::read_to_string("./flake.nix").unwrap();
-    flake = flake.replace("example", &dir);
-    let _ = fs::write("./flake.nix", flake).unwrap();
     replace::run("./", &dir);
 
     Ok(())
@@ -51,9 +48,6 @@ pub fn init() -> Result<()> {
     let binding = current_dir.display().to_string();
     let dir = binding.split("/").last().unwrap();
 
-    let mut flake = fs::read_to_string("./flake.nix").unwrap();
-    flake = flake.replace("example", &dir);
-    let _ = fs::write("./flake.nix", flake).unwrap();
     replace::run("./", &dir);
 
     Ok(())
