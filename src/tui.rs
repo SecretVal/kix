@@ -1,4 +1,4 @@
-use crate::replace;
+use crate::{replace, templates::get_template_url};
 use std::{
     env, fs,
     io::{self, stdin, stdout, BufRead, Result, Write},
@@ -6,34 +6,32 @@ use std::{
 };
 
 pub fn create() -> Result<()> {
-    let dir = create_text_inputut("Directory: ".to_string()).unwrap();
-    if dir.is_empty() {
-        eprintln!("Please specify the directory.");
+    let name = create_text_inputut("Directory: ".to_string()).unwrap();
+    if name.is_empty() {
+        eprintln!("Please specify the name.");
         process::exit(1);
     }
 
-    let language = create_text_inputut("Language: ".to_string()).unwrap();
-    if language.is_empty() {
-        eprintln!("Please specify the language.");
+    let template = create_text_inputut("Language: ".to_string()).unwrap();
+    if template.is_empty() {
+        eprintln!("Please specify the template.");
         process::exit(1);
     }
 
-    fs::create_dir(dir.clone()).expect("couldnt create directory");
-    let _ = std::env::set_current_dir(&dir).expect("Couldn't go into directory");
+    fs::create_dir(name.clone()).expect("couldnt create directory");
+    let _ = std::env::set_current_dir(&name).expect("Couldn't go into directory");
     let _ = Command::new("nix")
-        .arg("flake")
-        .arg("init")
-        .arg("-t")
-        .arg(format!("github:ALT-F4-LLC/kickstart.nix#{}", language))
+        .args(["flake","init","-t"])
+        .arg(get_template_url(&template).unwrap())
         .output();
-    replace::run("./", &dir);
+    replace::run("./", &name);
 
     Ok(())
 }
 
 pub fn init() -> Result<()> {
-    let language = create_text_inputut("Language: ".to_string()).unwrap();
-    if language.is_empty() {
+    let template = create_text_inputut("Language: ".to_string()).unwrap();
+    if template.is_empty() {
         eprintln!("Please specify the language.");
         process::exit(1);
     }
@@ -42,7 +40,7 @@ pub fn init() -> Result<()> {
         .arg("flake")
         .arg("init")
         .arg("-t")
-        .arg(format!("github:ALT-F4-LLC/kickstart.nix#{}", language))
+        .arg(format!("github:ALT-F4-LLC/kickstart.nix#{}", template))
         .output();
     let current_dir = env::current_dir().unwrap();
     let binding = current_dir.display().to_string();
