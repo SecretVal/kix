@@ -78,9 +78,9 @@ fn main() {
                 None => {}
             },
             None => {
-                // let _ = tui::create().map_err(|err| {
-                //     eprintln!("There was this error: {:?}", err);
-                // });
+                let _ = tui::create().map_err(|err| {
+                    eprintln!("There was this error: {:?}", err);
+                });
             }
         },
         Commands::Init(args) => match &args.template {
@@ -96,9 +96,9 @@ fn main() {
                 replace::run("./", &dir);
             }
             None => {
-                // let _ = tui::init().map_err(|err| {
-                //     eprintln!("There was this error: {:?}", err);
-                // });
+                let _ = tui::init().map_err(|err| {
+                    eprintln!("There was this error: {:?}", err);
+                });
             }
         },
     }

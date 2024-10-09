@@ -1,9 +1,10 @@
-use crate::{replace, templates::get_template_url};
+use crate::{replace, templates::{self, get_template_url, get_templates}};
 use std::{
     env, fs,
     io::{self, stdin, stdout, BufRead, Result, Write},
     process::{self, Command},
 };
+use fzf_wrapped::{run_with_output, Fzf};
 
 pub fn create() -> Result<()> {
     let name = create_text_inputut("Directory: ".to_string()).unwrap();
@@ -12,7 +13,11 @@ pub fn create() -> Result<()> {
         process::exit(1);
     }
 
-    let template = create_text_inputut("Language: ".to_string()).unwrap();
+    let mut templates: Vec<String> = vec![];
+    for template in get_templates() {
+        templates.push(template.1);
+    }
+    let template = run_with_output(Fzf::default(), templates).expect("Could not get user input");
     if template.is_empty() {
         eprintln!("Please specify the template.");
         process::exit(1);
@@ -30,19 +35,20 @@ pub fn create() -> Result<()> {
 }
 
 pub fn init() -> Result<()> {
-    let template = create_text_inputut("Language: ".to_string()).unwrap();
+    let mut templates: Vec<String> = vec![];
+    for template in get_templates() {
+        templates.push(template.1);
+    }
+    let template = run_with_output(Fzf::default(), templates).expect("Could not get user input");
     if template.is_empty() {
-        eprintln!("Please specify the language.");
+        eprintln!("Please specify the template.");
         process::exit(1);
     }
 
     let _ = Command::new("nix")
-        .arg("flake")
-        .arg("init")
-        .arg("-t")
-        .arg(format!("github:ALT-F4-LLC/kickstart.nix#{}", template))
-        .output();
-    let current_dir = env::current_dir().unwrap();
+        .args(["flake","init","-t"])
+        .arg(get_template_url(&template).unwrap())
+        .output();    let current_dir = env::current_dir().unwrap();
     let binding = current_dir.display().to_string();
     let dir = binding.split("/").last().unwrap();
 
