@@ -3,11 +3,15 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    flake-parts.url = "github:hercules-ci/flake-parts";
   };
 
   outputs = inputs @ {flake-parts, ...}:
     flake-parts.lib.mkFlake {inherit inputs;} {
       systems = ["x86_64-linux" "aarch64-linux" "aarch64-darwin" "x86_64-darwin"];
+      imports = [
+        inputs.flake-parts.flakeModules.easyOverlay
+      ];
 
       perSystem = {
         config,
@@ -15,6 +19,7 @@
         inputs',
         pkgs,
         system,
+        final,
         ...
       }: let
         inherit (pkgs) dockerTools rustPlatform;
@@ -29,20 +34,14 @@
           };
         };
 
-        _module.args.pkgs = import inputs.nixpkgs {
-          inherit system;
-          overlays = [
-            (final: prev: {
-              kix = system.packages.default;
-            })
-          ];
-          config = {};
+        overlayAttrs = {
+            inherit (config.packages) default;
         };
 
         packages = {
           default = buildRustPackage {
             inherit version;
-            cargoSha256 = "sha256-nzOFgHslrfS2C8qAebvBU+qecv/zfBX+3+hTrhnQvKc=";
+            cargoSha256 = "sha256-5PQvu0NgvhjeRgtwBmnTAnBGVlkBPpEvTGu7QOA35Zo=";
             pname = name;
             src = ./.;
           };
