@@ -9,6 +9,7 @@ Dependencies:
     - nix-command
     - nix flakes
     - git
+    - fzf
 
 1. Install all the dependencies.
 2. Clone this git repo.
