@@ -7,8 +7,7 @@ use crate::repos::Repo;
 
 
 pub fn get_templates() -> Vec<(Repo, String, u8)>{
-    let config: Config =
-    serde_json::from_str(read_config().as_str()).expect("Could not parse Json");
+    let config: Config = serde_json::from_str(read_config().as_str()).expect("Could not parse Json");
 
     let mut templates: Vec<(Repo, String, u8)> = vec![];
     for template in config.repos {

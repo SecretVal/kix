@@ -5,11 +5,13 @@ mod repos;
 mod tui;
 mod templates;
 
-use std::process::Command;
+use std::process::{exit, Command};
 use std::{env, fs};
 
 use clap::{Parser, Subcommand};
 use templates::get_template_url;
+use config::*;
+use piglog::*;
 
 #[derive(Parser)]
 #[command(
@@ -32,6 +34,7 @@ struct Cli {
 enum Commands {
     Create(CreateArgs),
     Init(InitArgs),
+    Update,
 }
 
 #[derive(Parser, Debug)]
@@ -65,14 +68,18 @@ fn main() {
     match &cli.command {
         Commands::Create(args) => match &args.name {
             Some(name) => match &args.template {
-                Some(template) => {
+                Some(template_name) => {
+                    let template = get_template_url(template_name);
+                    if template.is_none() {
+                        error!("Not a valid template");
+                        exit(1);
+                    }
                     fs::create_dir(&name).expect("couldnt create directory");
                     let _ = std::env::set_current_dir(name).expect("Couldn't go into directory");
                     let _ = Command::new("nix")
                         .args(["flake", "init", "-t"])
-                        .arg(get_template_url(template).unwrap())
+                        .arg(template.unwrap())
                         .output();
-
                     replace::run("./", &name);
                 }
                 None => {}
@@ -84,10 +91,15 @@ fn main() {
             }
         },
         Commands::Init(args) => match &args.template {
-            Some(template) => {
+            Some(template_name) => {
+                let template = get_template_url(template_name);
+                if template.is_none() {
+                    error!("Not a valid template");
+                    exit(1);
+                }
                 let _ = Command::new("nix")
                     .args(["flake","init", "-t"])
-                    .arg(get_template_url(template).unwrap())
+                    .arg(template.unwrap())
                     .output();
                 let current_dir = env::current_dir().unwrap();
                 let binding = current_dir.display().to_string();
@@ -101,5 +113,15 @@ fn main() {
                 });
             }
         },
+        Commands::Update => {
+            let config: Config = serde_json::from_str(read_config().as_str()).expect("Could not parse Json");
+            info!("Updating repos:");
+            for repo in config.repos {
+                info!("Updating: {}", repo.url);
+                let _ = Command::new("nix")
+                    .args(["flake", "update", repo.url.as_str()])
+                    .output();
+            }
+        }
     }
 }

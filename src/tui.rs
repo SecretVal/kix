@@ -1,10 +1,11 @@
-use crate::{replace, templates::{self, get_template_url, get_templates}};
+use crate::{replace, templates::{get_template_url, get_templates}};
 use std::{
     env, fs,
     io::{self, stdin, stdout, BufRead, Result, Write},
     process::{self, Command},
 };
 use fzf_wrapped::{run_with_output, Fzf};
+use piglog::*;
 
 pub fn create() -> Result<()> {
     let name = create_text_inputut("Directory: ".to_string()).unwrap();
@@ -19,7 +20,7 @@ pub fn create() -> Result<()> {
     }
     let template = run_with_output(Fzf::default(), templates).expect("Could not get user input");
     if template.is_empty() {
-        eprintln!("Please specify the template.");
+        error!("Not a valid template");
         process::exit(1);
     }
 
@@ -41,7 +42,7 @@ pub fn init() -> Result<()> {
     }
     let template = run_with_output(Fzf::default(), templates).expect("Could not get user input");
     if template.is_empty() {
-        eprintln!("Please specify the template.");
+        error!("Not a valid template");
         process::exit(1);
     }
 
