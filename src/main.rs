@@ -2,16 +2,16 @@
 mod config;
 mod replace;
 mod repos;
-mod tui;
 mod templates;
+mod tui;
 
 use std::process::{exit, Command};
 use std::{env, fs};
 
 use clap::{Parser, Subcommand};
-use templates::get_template_url;
 use config::*;
 use piglog::*;
+use templates::get_template_url;
 
 #[derive(Parser)]
 #[command(
@@ -98,7 +98,7 @@ fn main() {
                     exit(1);
                 }
                 let _ = Command::new("nix")
-                    .args(["flake","init", "-t"])
+                    .args(["flake", "init", "-t"])
                     .arg(template.unwrap())
                     .output();
                 let current_dir = env::current_dir().unwrap();
@@ -114,12 +114,13 @@ fn main() {
             }
         },
         Commands::Update => {
-            let config: Config = serde_json::from_str(read_config().as_str()).expect("Could not parse Json");
+            let config: Config =
+                serde_json::from_str(read_config().as_str()).expect("Could not parse Json");
             info!("Updating repos:");
             for repo in config.repos {
                 info!("Updating: {}", repo.url);
                 let _ = Command::new("nix")
-                    .args(["flake", "update", repo.url.as_str()])
+                    .args(["flake", "update", "--flake", repo.url.as_str()])
                     .output();
             }
         }

@@ -1,11 +1,14 @@
-use crate::{replace, templates::{get_template_url, get_templates}};
+use crate::{
+    replace,
+    templates::{get_template_url, get_templates},
+};
+use fzf_wrapped::{run_with_output, Fzf};
+use piglog::*;
 use std::{
     env, fs,
     io::{self, stdin, stdout, BufRead, Result, Write},
     process::{self, Command},
 };
-use fzf_wrapped::{run_with_output, Fzf};
-use piglog::*;
 
 pub fn create() -> Result<()> {
     let name = create_text_inputut("Directory: ".to_string()).unwrap();
@@ -27,7 +30,7 @@ pub fn create() -> Result<()> {
     fs::create_dir(name.clone()).expect("couldnt create directory");
     let _ = std::env::set_current_dir(&name).expect("Couldn't go into directory");
     let _ = Command::new("nix")
-        .args(["flake","init","-t"])
+        .args(["flake", "init", "-t"])
         .arg(get_template_url(&template).unwrap())
         .output();
     replace::run("./", &name);
@@ -47,9 +50,10 @@ pub fn init() -> Result<()> {
     }
 
     let _ = Command::new("nix")
-        .args(["flake","init","-t"])
+        .args(["flake", "init", "-t"])
         .arg(get_template_url(&template).unwrap())
-        .output();    let current_dir = env::current_dir().unwrap();
+        .output();
+    let current_dir = env::current_dir().unwrap();
     let binding = current_dir.display().to_string();
     let dir = binding.split("/").last().unwrap();
 

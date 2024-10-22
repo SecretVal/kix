@@ -3,7 +3,6 @@ use serde::{Deserialize, Serialize};
 
 use crate::repos::Repo;
 
-
 const DEFAULT_CONFIG: &str = r#"{
     "repos": [
         {
@@ -18,7 +17,6 @@ const DEFAULT_CONFIG: &str = r#"{
 pub struct Config {
     pub(crate) repos: Vec<Repo>,
 }
-
 
 fn config_dir() -> Path {
     location::config().unwrap().add_str("kix")
