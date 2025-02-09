@@ -33,7 +33,8 @@
         packages = {
           default = buildRustPackage {
             inherit version;
-            cargoHash = "sha256-TZTVhaW+2wZKHtiwHW6jvScZ88GjJiOgSo5W0yXd540=";
+            cargoHash = "sha256-29TD+xptdavbM7LQ0r9cfH95NaVdxu+/4zfvRmwSI48=";
+            useFetchCargoVendor = true;
             pname = name;
             src = ./.;
           };
