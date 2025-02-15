@@ -82,9 +82,9 @@ fn main() {
                         .output();
                     replace::run("./", &name);
                 }
-                None => {}
+                _ => {}
             },
-            None => {
+            _ => {
                 let _ = tui::create().map_err(|err| {
                     eprintln!("There was this error: {:?}", err);
                 });
@@ -107,7 +107,7 @@ fn main() {
 
                 replace::run("./", &dir);
             }
-            None => {
+            _ => {
                 let _ = tui::init().map_err(|err| {
                     eprintln!("There was this error: {:?}", err);
                 });
@@ -119,6 +119,7 @@ fn main() {
             info!("Updating repos:");
             for repo in config.repos {
                 info!("Updating: {}", repo.url);
+                println!("{}", repo.url.as_str());
                 let _ = Command::new("nix")
                     .args(["flake", "update", "--flake", repo.url.as_str()])
                     .output();
