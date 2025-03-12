@@ -34,7 +34,7 @@ struct Cli {
 enum Commands {
     Create(CreateArgs),
     Init(InitArgs),
-    Update,
+    Update(UpdateArgs),
 }
 
 #[derive(Parser, Debug)]
@@ -56,12 +56,21 @@ struct CreateArgs {
     author,
     version,
     about,
-    long_about = "Initialize a project using any nixo"
+    long_about = "Initialize a project using nix templates"
 )]
 struct InitArgs {
     #[arg(short, long, required = false)]
     template: Option<String>,
 }
+
+#[derive(Parser, Debug)]
+#[command(
+    author,
+    version,
+    about,
+    long_about = "Update all templates"
+)]
+struct UpdateArgs {}
 
 fn main() {
     let cli = Cli::parse();
@@ -113,7 +122,7 @@ fn main() {
                 });
             }
         },
-        Commands::Update => {
+        Commands::Update(_) => {
             let config: Config =
                 serde_json::from_str(read_config().as_str()).expect("Could not parse Json");
             info!("Updating repos:");
