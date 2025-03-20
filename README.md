@@ -40,3 +40,4 @@ Replace {store path} with your store path.
 5. Now you can run this again:
 ```sh
 nix profile install
+```
