@@ -25,19 +25,18 @@ nix profile install
 ```sh
 kix help
 ```
-## Updating
-1. Clone the repo again or do a git pull.
-2. Then run this:
-```sh
-nix profile list
+
+## Install
+To install nix globally on any nixos machine that uses flakes is as easy as:
+```nix
+inputs.kix.url = "github:secretval/kix";
 ```
-3. Copy the store path of the one with kix in the name.
-4. Now run:
-```sh
-nix profile remove + {store path}
+and then either:
+```nix
+environment.systemPackages = [inputs.kix.packages.${system}.default];
 ```
-Replace {store path} with your store path.
-5. Now you can run this again:
-```sh
-nix profile install
+or
+```nix
+home.packages = [inputs.kix.packages.${system}.default];
 ```
+You will have to create a variable `system` for that to work or you can just replace the `${system}` with your system architecture.
